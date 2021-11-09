@@ -38,7 +38,10 @@ public class ArticleController {
 		return "redirect:/article";
 	}
 	
-	
-	
-	
+	@RequestMapping("/delete")
+	public String delete(Integer id) {
+		System.out.println(id);
+		articleRepository.delete(id);
+		return "redirect:/article";
+	}
 }
