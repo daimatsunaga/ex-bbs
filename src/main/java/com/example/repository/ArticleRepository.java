@@ -34,7 +34,7 @@ public class ArticleRepository {
 		template.update(sql, param);
 	}
 	
-	public void delete(Integer id) {
+	public void deleteById(Integer id) {
 		String sql = "DELETE FROM articles WHERE id = :id;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);

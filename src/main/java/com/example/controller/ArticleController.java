@@ -31,7 +31,7 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/insert")
-	public String insert(ArticleForm form) {
+	public String insertArticle(ArticleForm form) {
 		Article article = new Article();
 		BeanUtils.copyProperties(form, article);
 		articleRepository.insert(article);
@@ -39,9 +39,9 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(Integer id) {
+	public String deleteArticle(Integer id) {
 		System.out.println(id);
-		articleRepository.delete(id);
+		articleRepository.deleteById(id);
 		return "redirect:/article";
 	}
 }
