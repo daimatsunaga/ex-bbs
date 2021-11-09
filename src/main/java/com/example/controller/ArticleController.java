@@ -10,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
+import com.example.domain.Comment;
 import com.example.form.ArticleForm;
+import com.example.form.CommentForm;
 import com.example.repository.ArticleRepository;
+import com.example.repository.CommentRepository;
 
 @Controller
 @RequestMapping("/article")
@@ -21,11 +24,23 @@ public class ArticleController {
 	private ArticleRepository articleRepository;
 	
 	@Autowired
+	private CommentRepository commentRepository;
+	
+	@Autowired
 	private HttpSession session;
 	
 	@RequestMapping("")
 	public String index() {
 		List<Article> articleList = articleRepository.findAll();
+		
+		for(Article article : articleList) {
+			List<Comment> commentList = commentRepository.findByArticle(article.getId());
+			if(commentList == null) {
+				continue;
+			}
+			article.setCommentList(commentList);
+		}
+		
 		session.setAttribute("articleList", articleList);
 		return "article_index";
 	}
@@ -42,6 +57,16 @@ public class ArticleController {
 	public String deleteArticle(Integer id) {
 		System.out.println(id);
 		articleRepository.deleteById(id);
+		commentRepository.deleteByArticleId(id);
+		return "redirect:/article";
+	}
+	
+	@RequestMapping("/insert-comment")
+	public String insertComment(CommentForm form, Integer articleId) {
+		Comment comment = new Comment();
+		BeanUtils.copyProperties(form, comment);
+		comment.setArticleId(articleId);
+		commentRepository.insert(comment);
 		return "redirect:/article";
 	}
 }
