@@ -20,8 +20,10 @@ public class ArticleRepository {
 	 = new BeanPropertyRowMapper<>(Article.class);
 	
 	public List<Article> findAll() {
-		String sql = "SELECT * FROM articles;";
+		String sql = "SELECT * FROM articles ORDER BY id DESC;";
 		List<Article> articleList = template.query(sql, ARTICLE_ROW_MAPPER);
 		return articleList;
 	}
+	
+	
 }
