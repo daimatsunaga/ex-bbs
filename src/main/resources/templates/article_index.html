@@ -12,7 +12,7 @@
 	</form>
 	<hr>
 	
-	<div th:each="article:${session.articleList}">
+	<div th:each="article:${articleList}">
 		投稿者名：<span th:text="${article.name}"></span><br>
 		投稿内容：<span th:text="${article.content}"></span>
 		<form th:action="@{/article/delete}" method="post">

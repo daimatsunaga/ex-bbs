@@ -2,11 +2,10 @@ package com.example.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
@@ -26,11 +25,8 @@ public class ArticleController {
 	@Autowired
 	private CommentRepository commentRepository;
 	
-	@Autowired
-	private HttpSession session;
-	
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
 		List<Article> articleList = articleRepository.findAll();
 		
 //		for(Article article : articleList) {
@@ -38,7 +34,7 @@ public class ArticleController {
 //			article.setCommentList(commentList);
 //		}
 				
-		session.setAttribute("articleList", articleList);
+		model.addAttribute("articleList", articleList);
 		return "article_index";
 	}
 	
