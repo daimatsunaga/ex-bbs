@@ -33,14 +33,11 @@ public class ArticleController {
 	public String index() {
 		List<Article> articleList = articleRepository.findAll();
 		
-		for(Article article : articleList) {
-			List<Comment> commentList = commentRepository.findByArticle(article.getId());
-			if(commentList == null) {
-				continue;
-			}
-			article.setCommentList(commentList);
-		}
-		
+//		for(Article article : articleList) {
+//			List<Comment> commentList = commentRepository.findByArticle(article.getId());
+//			article.setCommentList(commentList);
+//		}
+				
 		session.setAttribute("articleList", articleList);
 		return "article_index";
 	}
@@ -55,7 +52,6 @@ public class ArticleController {
 	
 	@RequestMapping("/delete")
 	public String deleteArticle(Integer id) {
-		System.out.println(id);
 		articleRepository.deleteById(id);
 		commentRepository.deleteByArticleId(id);
 		return "redirect:/article";
