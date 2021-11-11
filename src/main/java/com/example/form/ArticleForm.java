@@ -1,4 +1,7 @@
 package com.example.form;
+
+import javax.validation.constraints.NotBlank;
+
 /**
  * Articleのフォームクラス
  * @author matsunagadai
@@ -7,7 +10,9 @@ package com.example.form;
 public class ArticleForm {
 
 	//記事の投稿者名
+	@NotBlank(message="投稿者名が空欄です")
 	private String name;
+	@NotBlank(message="投稿内容が空欄です")
 	//記事内容
 	private String content;
 	

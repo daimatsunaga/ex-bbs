@@ -6,6 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Article;
@@ -25,6 +28,16 @@ public class ArticleController {
 	@Autowired
 	private CommentRepository commentRepository;
 	
+	@ModelAttribute
+	public ArticleForm setUpArticleForm() {
+		return new ArticleForm();
+	}
+	
+	@ModelAttribute
+	public CommentForm setUpCommentForm() {
+		return new CommentForm();
+	}
+	
 	@RequestMapping("")
 	public String index(Model model) {
 		List<Article> articleList = articleRepository.findAll();
@@ -39,7 +52,10 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/insert")
-	public String insertArticle(ArticleForm form) {
+	public String insertArticle(@Validated ArticleForm form, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
 		Article article = new Article();
 		BeanUtils.copyProperties(form, article);
 		articleRepository.insert(article);
@@ -54,7 +70,11 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/insert-comment")
-	public String insertComment(CommentForm form, Integer articleId) {
+	public String insertComment(@Validated CommentForm form, BindingResult result, Integer articleId, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("articleId", articleId);
+			return index(model);
+		}
 		Comment comment = new Comment();
 		BeanUtils.copyProperties(form, comment);
 		comment.setArticleId(articleId);

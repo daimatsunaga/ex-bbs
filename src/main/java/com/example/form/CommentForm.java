@@ -1,4 +1,7 @@
 package com.example.form;
+
+import javax.validation.constraints.NotBlank;
+
 /**
  * 記事に対するコメントのフォームクラス
  * @author matsunagadai
@@ -9,8 +12,10 @@ public class CommentForm {
 	//紐づく記事のId
 	private String articleId;
 	//コメントした人の名前
+	@NotBlank(message="名前が空欄です")
 	private String name;
 	//コメント内容
+	@NotBlank(message="コメントが空欄です")
 	private String content;
 	
 	//ゲッターセッター
