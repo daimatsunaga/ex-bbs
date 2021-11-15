@@ -46,7 +46,6 @@ public class ArticleController {
 //			List<Comment> commentList = commentRepository.findByArticle(article.getId());
 //			article.setCommentList(commentList);
 //		}
-				
 		model.addAttribute("articleList", articleList);
 		return "article_index";
 	}

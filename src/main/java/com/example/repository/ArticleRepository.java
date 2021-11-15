@@ -80,6 +80,7 @@ public class ArticleRepository {
 	
 	public void deleteById(Integer id) {
 		String sql = "DELETE FROM articles WHERE id = :id;";
+//		String sql = "DELETE articles, comments FROM articles LEST OUTER JOIN comments ON a.id = c.article_id WHERE a.id = :id;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
 	}
@@ -87,11 +88,8 @@ public class ArticleRepository {
 	public List<Article> findAll() {
 		String sql = "SELECT a.id, a.name, a.content, c.id AS com_id, "
 				+ "c.name AS com_name, c.content AS com_content, c.article_id "
-				+ "FROM articles AS a LEFT OUTER JOIN comments AS c ON a.id = c.article_id;";
-		
-		
+				+ "FROM articles AS a LEFT OUTER JOIN comments AS c ON a.id = c.article_id ORDER BY a.id DESC;";
 		List<Article> articleList = template.query(sql, ARTICLE_COMMENT_RESULTSET);
-		
 		return articleList;
 	}
 }
